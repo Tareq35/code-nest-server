@@ -4,6 +4,7 @@ const cors = require('cors');
 const port = process.env.PORT || 5000
 
 app.use(cors())
+app.use(express.json());
 
 const courses = require('./data/courses.json');
 const coursesCategory = require('./data/coursesCategory.json');
@@ -22,13 +23,19 @@ app.get('/coursesCategory', (req, res) => {
 
 app.get('/coursesCategory/:id', (req, res) => {
     const id = req.params.id;
-    if(id === '07'){
+    if (id === '07') {
         res.send(courses)
     }
-    else{
+    else {
         const categoryItem = courses.filter(course => course.categoryId === id);
         res.send(categoryItem);
     }
+})
+
+app.get('/courses/:id', (req, res) => {
+    const id = req.params.id;
+    const selectedCourse = courses.find(c => c.id === id);
+    res.send(selectedCourse);
 })
 
 app.listen(port, () => {
